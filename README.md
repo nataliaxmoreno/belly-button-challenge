@@ -11,5 +11,5 @@ The dashboard can be accessed from the link: https://nsheikh23.github.io/Plotly-
 Data Visualization
 # Technologies
 JavaScript
-Plotly
+Plotly, chartjs
 HTML, CSS
