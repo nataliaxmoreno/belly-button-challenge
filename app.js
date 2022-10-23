@@ -18,14 +18,14 @@ function init() {
 		// Use the first sample from the list to build the initial plots
 		let firstSample = sampleNames[0];
 		buildCharts(firstSample);
-		dropdown(firstSample);
+		patientinfo(firstSample);
 	});
 }
 // call the init function to generate the first graphs
 init();
 
 // this function is populating the patient information from metadata
-function dropdown(patientselected) {
+function patientinfo(patientselected) {
 	d3.json("samples.json").then((data) => {
 		let metadata = data.metadata;
 		let patient = metadata.filter((sampleobject) => sampleobject.id == patientselected)[0];
@@ -33,7 +33,9 @@ function dropdown(patientselected) {
 		demographicInfoBox.html("");
 		for (key in patient) {
 			demographicInfoBox.append("h6").text(`${key}: ${patient[key]}`);
+			
 		};
+		
 
 	})
 }
@@ -42,18 +44,20 @@ function dropdown(patientselected) {
 
 function buildCharts(patientselected) {
 	{
-		d3.json("samples.json").then((data) => {
+			d3.json("samples.json").then((data) => {
 			let samples = data.samples;
 			let patient = samples.filter((sampleobject) => sampleobject.id == patientselected)[0];
 			let metadata = data.metadata.filter((sampleobject) => sampleobject.id == patientselected)[0];
 			let otu_ids = patient.otu_ids;
 			let otu_labels = patient.otu_labels;
 			let sample_values = patient.sample_values;
+			
+			
 			console.log(metadata)
 
 			// Build a Bubble Chart                            
 			let bubbleLayout = {
-				title: "Bacteria Cultures Per Sample",
+				title: "<b>Bacteria Cultures Per Sample</b>",
 				margin: {
 					t: 0
 				},
@@ -78,28 +82,6 @@ function buildCharts(patientselected) {
 			}];
 
 			Plotly.newPlot("bubble", bubbleData, bubbleLayout);
-
-			let yticks = otu_ids.slice(0, 10).map(otuID => `OTU ${otuID}`).reverse();
-			let barData = [{
-				y: yticks,
-				x: sample_values.slice(0, 10).reverse(),
-				text: otu_labels.slice(0, 10).reverse(),
-				type: "bar",
-				orientation: "h",
-				marker: {
-					color: '#B4F8C8'
-				}
-			}];
-
-			let barLayout = {
-				title: "Top 10 Bacteria Cultures Found",
-				margin: {
-					t: 30,
-					l: 150
-				}
-			};
-
-			Plotly.newPlot("bar", barData, barLayout);
 
 			var guageData = [{
 				domain: {
@@ -169,16 +151,84 @@ function buildCharts(patientselected) {
 				},
 			};
 			Plotly.newPlot("gauge", guageData, layout);
+
+			let yticks = otu_ids.slice(0, 10).map(otuID => `OTU ${otuID}`);
+			
+			
+			function newchart(){ if ("my bar") {"my bar".destroy() &&
+				new Chart("my bar", {
+				type: "horizontalBar",
+				data: {
+						labels: yticks,
+						datasets: [{data: sample_values.slice(0, 10),
+						borderWidth: 1,
+						backgroundColor: [
+									'rgba(255, 99, 132, 0.2)',
+									'rgba(255, 159, 64, 0.2)',
+									'rgba(255, 205, 86, 0.2)',
+									'rgba(75, 192, 192, 0.2)',
+									'rgba(54, 162, 235, 0.2)',
+									'rgba(153, 102, 255, 0.2)',
+									'rgba(201, 203, 207, 0.2)',
+									'rgba(135, 212, 0, 0.2)',
+									'rgba(0, 97, 255, 0.3)',
+									'rgba(150, 36, 0, 0.2)'
+								  ],
+								  borderColor: [
+									'rgb(255, 99, 132)',
+									'rgb(255, 159, 64)',
+									'rgb(255, 205, 86)',
+									'rgb(75, 192, 192)',
+									'rgb(54, 162, 235)',
+									'rgb(153, 102, 255)',
+									'rgb(201, 203, 207)'
+								  ],
+						}]
+					  },
+				options: {scales: {
+					xAxes: [{
+						ticks: {
+							beginAtZero: true
+						},
+						responsive: false,
+					}]
+				},
+				  legend: {display: false},
+				  title: {
+					display: true,
+					text: "Top 10 Bacteria Cultures Found"
+				  },
+				 
+				}
+			  });}}
+
+			  let newbartest = newchart();
+			  
+			  
+
+
+			  
+			 
+
+			  
+
+
+			
 		});
+		
 	}
-}
+	
+};
+
+ 
 
 
 // this function changes all the graphs and uses and event listener, it has to be linked both in js and html 
-function eventlistenerfunction(newSample) {
+function eventlistenerfunction(newSample) { 
 	// Fetch new data each time a new sample is selected
 	buildCharts(newSample);
-	dropdown(newSample);
+	patientinfo(newSample);
+	
 }
 
-// Initialize the dashboard
+
