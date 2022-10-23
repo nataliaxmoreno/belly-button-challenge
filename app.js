@@ -67,7 +67,13 @@ function buildCharts(patientselected) {
 				},
 				margin: {
 					t: 30
-				}
+				},
+				paper_bgcolor: "rgba(0,0,0,0)",
+				plot_bgcolor:'rgba(0,0,0,0)',
+				font: {
+					family: 'Arial',
+					
+				  }
 			};
 			let bubbleData = [{
 				x: otu_ids,
@@ -148,15 +154,18 @@ function buildCharts(patientselected) {
 					r: 25,
 					l: 25,
 					b: 25
-				},
+				}, paper_bgcolor: "rgba(0,0,0,0)",
+				font: {
+					family: 'Arial',
+					
+				  }
 			};
 			Plotly.newPlot("gauge", guageData, layout);
 
 			let yticks = otu_ids.slice(0, 10).map(otuID => `OTU ${otuID}`);
 			
 			
-			function newchart(){ if ("my bar") {"my bar".destroy() &&
-				new Chart("my bar", {
+			new Chart("my bar", {
 				type: "horizontalBar",
 				data: {
 						labels: yticks,
@@ -191,6 +200,7 @@ function buildCharts(patientselected) {
 							beginAtZero: true
 						},
 						responsive: false,
+						maintainAspectRatio: false,
 					}]
 				},
 				  legend: {display: false},
@@ -198,22 +208,12 @@ function buildCharts(patientselected) {
 					display: true,
 					text: "Top 10 Bacteria Cultures Found"
 				  },
+				  font: {family: "Arial", fontColor:"#f5f5f5"}
 				 
 				}
-			  });}}
-
-			  let newbartest = newchart();
-			  
-			  
+			  });
 
 
-			  
-			 
-
-			  
-
-
-			
 		});
 		
 	}
@@ -224,7 +224,9 @@ function buildCharts(patientselected) {
 
 
 // this function changes all the graphs and uses and event listener, it has to be linked both in js and html 
-function eventlistenerfunction(newSample) { 
+function eventlistenerfunction(newSample) {Chart.helpers.each(Chart.instances, function (instance) {
+	instance.destroy();
+}); 
 	// Fetch new data each time a new sample is selected
 	buildCharts(newSample);
 	patientinfo(newSample);
