@@ -7,9 +7,9 @@ The dataset reveals that a small handful of microbial species (also called opera
 
 The dashboard can be accessed from the link: https://nsheikh23.github.io/Plotly-challenge/
 
-#Methods Used
+# Methods Used
 Data Visualization
-#Technologies
+# Technologies
 JavaScript
 Plotly
 HTML, CSS
